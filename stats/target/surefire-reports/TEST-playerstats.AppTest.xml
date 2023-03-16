@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="playerstats.AppTest" time="0.04" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="playerstats.AppTest" time="0.042" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-17.0.2\bin"/>
-    <property name="sun.java.command" value="C:\Users\Andrew\AppData\Local\Temp\surefire18092609570271037720\surefirebooter4545221304909136810.jar C:\Users\Andrew\AppData\Local\Temp\surefire18092609570271037720 2023-03-16T17-55-35_691-jvmRun1 surefire4765767335451390775tmp surefire_04171308110863025446tmp"/>
+    <property name="sun.java.command" value="C:\Users\Andrew\AppData\Local\Temp\surefire15486330854208828940\surefirebooter16898755057875370490.jar C:\Users\Andrew\AppData\Local\Temp\surefire15486330854208828940 2023-03-16T18-41-04_061-jvmRun1 surefire1185110793565269790tmp surefire_01370339164606551687tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\Andrew\Desktop\playerstats\playerstats-refactored\stats\target\test-classes;C:\Users\Andrew\Desktop\playerstats\playerstats-refactored\stats\target\classes;C:\Users\Andrew\.m2\repository\com\liferay\com.fasterxml.jackson.annotations\2.10.3.LIFERAY-PATCHED-1\com.fasterxml.jackson.annotations-2.10.3.LIFERAY-PATCHED-1.jar;C:\Users\Andrew\.m2\repository\com\liferay\com.fasterxml.jackson.core\2.10.3.LIFERAY-PATCHED-1\com.fasterxml.jackson.core-2.10.3.LIFERAY-PATCHED-1.jar;C:\Users\Andrew\.m2\repository\com\liferay\com.fasterxml.jackson.databind\2.10.5.1.LIFERAY-PATCHED-1\com.fasterxml.jackson.databind-2.10.5.1.LIFERAY-PATCHED-1.jar;C:\Users\Andrew\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.6.0\junit-jupiter-api-5.6.0.jar;C:\Users\Andrew\.m2\repository\org\apiguardian\apiguardian-api\1.1.0\apiguardian-api-1.1.0.jar;C:\Users\Andrew\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\Andrew\.m2\repository\org\junit\platform\junit-platform-commons\1.6.0\junit-platform-commons-1.6.0.jar;C:\Users\Andrew\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.6.0\junit-jupiter-engine-5.6.0.jar;C:\Users\Andrew\.m2\repository\org\junit\platform\junit-platform-engine\1.6.0\junit-platform-engine-1.6.0.jar;C:\Users\Andrew\.m2\repository\org\json\json\20220320\json-20220320.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Andrew\AppData\Local\Temp\surefire18092609570271037720\surefirebooter4545221304909136810.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Andrew\AppData\Local\Temp\surefire15486330854208828940\surefirebooter16898755057875370490.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.2+8-LTS-86"/>
@@ -57,5 +57,5 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testApp" classname="playerstats.AppTest" time="0.027"/>
+  <testcase name="testApp" classname="playerstats.AppTest" time="0.029"/>
 </testsuite>

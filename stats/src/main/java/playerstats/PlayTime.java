@@ -38,7 +38,7 @@ public class PlayTime {
         Map<String, Integer> usernameAndTime = new HashMap<String, Integer>();
         Scanner input = new Scanner(System.in);
 
-        System.out.println("Is this server 1.12.X? (Y/N)");
+        System.out.println("Is this server on 1.12 (or older)? (Y/N)");
         String isPointTwelve = input.nextLine();
         while (true) {
             if (!"y".equalsIgnoreCase(isPointTwelve) && !"n".equalsIgnoreCase(isPointTwelve)) {
