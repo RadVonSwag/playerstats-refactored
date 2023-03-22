@@ -1,5 +1,5 @@
 # playerstats-refactored
-This project is meant for minecraft server owners to quickly and easily extrapolate playerstats from the command line
+This project is meant for Minecraft server owners to quickly and easily extrapolate playerstats from the command line
 without having to dig through files, decipher UUIDs, etc.
 
 This is the first iteration of this project. Currently it only supports obtaining playtime in hours for all players.
