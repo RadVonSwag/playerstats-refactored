@@ -51,6 +51,10 @@ public class PlayTime {
         }
         input.close();
         File[] statsFiles = new File(statsDir).listFiles();
+        if (statsFiles == null) {
+            System.out.println("Stats files not found at: " + statsDir);
+            System.exit(0);
+        }
 
         if ("n".equalsIgnoreCase(isPointTwelve)) {
             for (int i = 0; i < statsFiles.length; i++) {
@@ -65,8 +69,17 @@ public class PlayTime {
                         String uuid = currentFile.getName().substring(0, UUID_INDEX);
                         uuidAndTime.put(uuid, timePlayed);
                     } catch (NullPointerException e) {
-                        System.out.println("Error obtaining player stats. Please double check server version...");
-                        System.exit(0);
+                        try {
+                            String timePlayedAsString = currentPlayer.get("stats").get("minecraft:custom")
+                                    .get("minecraft:play_time")
+                                    .toString();
+                            int timePlayed = Integer.parseInt(timePlayedAsString) / TIME_FACTOR;
+                            String uuid = currentFile.getName().substring(0, UUID_INDEX);
+                            uuidAndTime.put(uuid, timePlayed);
+                        } catch (NullPointerException t) {
+                            System.out.println("Error obtaining player stats. Please double check server version...");
+                            System.exit(0);
+                        }
                     }
                 } catch (IOException e) {
                     System.out.println("Error obtaining player stats. Please double check server version...");

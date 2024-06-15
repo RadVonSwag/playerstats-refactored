@@ -2,6 +2,7 @@ package playerstats;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -38,7 +39,7 @@ public final class PlayerStats {
             System.out.println("Exiting...");
             System.exit(0);
         } else {
-            Scanner reader = new Scanner(serverProperties);
+            Scanner reader = new Scanner(serverProperties, StandardCharsets.UTF_8.name());
             while (reader.hasNextLine()) {
                 String line = reader.nextLine();
                 if (line.contains("level-name")) {
