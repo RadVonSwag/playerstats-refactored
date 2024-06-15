@@ -1,5 +1,5 @@
 # playerstats-refactored
-This project is meant for minecraft server owners to quickly and easily extrapolate playerstats from the command line
+This project is meant for Minecraft server owners to quickly and easily extrapolate playerstats from the command line
 without having to dig through files, decipher UUIDs, etc.
 
 This is the first iteration of this project. Currently it only supports obtaining playtime in hours for all players.
@@ -19,4 +19,4 @@ Answer "n" if the server is 1.13 or newer.
 Planned features:
 - Set server version once and skip the version prompt on subsequent runs
 - Ability to choose what stats to show
-- Store results in their own file in a directory just for the formatted stats.
+- Store results in their own file with date for later reference.
