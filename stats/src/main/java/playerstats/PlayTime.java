@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.logging.Logger;
 
 /**
@@ -19,7 +18,6 @@ public class PlayTime {
     private static final int UUID_INDEX = 36;
     private Logger log = Logger.getLogger(PlayTime.class.getName());
     private String usercacheDir = "./usercache.json";
-    private String statsDir;
     private final ObjectMapper mapper = new ObjectMapper();
 
     /**
@@ -28,33 +26,13 @@ public class PlayTime {
      * It then proceeds with the stat retrieval and time calculation.
      * @param inStatsDir this is the stats directory retrieved in PlayerStats
      */
-    public Map<String, Integer> getTimePlayed(String inStatsDir, boolean useWhitelist) {
-        statsDir = inStatsDir;
+    public Map<String, Integer> getTimePlayed( String isPointTwelve, File[] statsFiles, boolean useWhitelist) {
         if (useWhitelist) {
             usercacheDir = "./whitelist.json";
         }
-        log.info("user-stats directory: " + statsDir);
+        log.info("Gathering User Time Played");
         Map<String, Integer> uuidAndTime = new HashMap<String, Integer>();
         Map<String, Integer> usernameAndTime = new HashMap<String, Integer>();
-        Scanner input = new Scanner(System.in);
-
-        System.out.println("Is this server on 1.12 (or older)? (Y/N)");
-        String isPointTwelve = input.nextLine();
-        while (true) {
-            if (!"y".equalsIgnoreCase(isPointTwelve) && !"n".equalsIgnoreCase(isPointTwelve)) {
-                System.out.println("(Y/N)\n");
-                isPointTwelve = input.nextLine();
-                continue;
-            } else {
-                break;
-            }
-        }
-        input.close();
-        File[] statsFiles = new File(statsDir).listFiles();
-        if (statsFiles == null) {
-            System.out.println("Stats files not found at: " + statsDir);
-            System.exit(0);
-        }
 
         if ("n".equalsIgnoreCase(isPointTwelve)) {
             for (int i = 0; i < statsFiles.length; i++) {
@@ -113,6 +91,7 @@ public class PlayTime {
 
         try {
             playerList = mapper.readTree(new File(usercacheDir));
+            log.info("Players found: " + playerList.size());
             for (int i = 0; i < playerList.size(); i++) {
                 String uuidKey = playerList.get(i).get("uuid").asText();
                 int time = 0;

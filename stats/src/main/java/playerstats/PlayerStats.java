@@ -2,6 +2,8 @@ package playerstats;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Scanner;
@@ -13,8 +15,44 @@ public final class PlayerStats {
     private static final int LEVEL_NAME_INDEX = 11;
     private static final int USERCACHE_BUFFER = 39;
     private static boolean useWhitelist;
-
+    private static String isPointTwelve;
+    private static final String VERSION_CONFIG_DIR = "./playerstats/config/minecraft_version.dat";
+    
     private PlayerStats() {
+    }
+
+    /**
+     * This method checks to see if the user has specified the version once before, making it so that they do not have to enter the version every time.
+     * @return "y" or "n" based on the content of the version file or the users' input if first time running.
+     * @throws IOException
+     * 
+     */
+    public static String versionCheck() throws IOException {
+        File minecraftVersionFile = new File(VERSION_CONFIG_DIR);
+        if (!minecraftVersionFile.exists()) {
+            minecraftVersionFile.getParentFile().mkdirs();
+            FileWriter writer = new FileWriter(VERSION_CONFIG_DIR);
+            Scanner input = new Scanner(System.in);
+            System.out.println("Is this server on 1.12 (or older)? (Y/N)");
+            isPointTwelve = input.nextLine();
+            while (true) {
+                if (!"y".equalsIgnoreCase(isPointTwelve) && !"n".equalsIgnoreCase(isPointTwelve)) {
+                    System.out.println("(Y/N)\n");
+                    isPointTwelve = input.nextLine();
+                    continue;
+                } else {
+                    break;
+                }
+            }
+            writer.write(isPointTwelve);
+            input.close();
+            writer.close();
+        } else {
+            Scanner reader = new Scanner(minecraftVersionFile);
+            isPointTwelve = reader.nextLine();
+            reader.close();
+        }
+        return isPointTwelve;
     }
 
     /**
@@ -23,7 +61,7 @@ public final class PlayerStats {
      * file for use in obtaining playerstats.
      * @throws FileNotFoundException
      */
-    public static String getPlayerDataDir() throws FileNotFoundException {
+    public static File[] getPlayerDataDir() throws FileNotFoundException {
         File serverProperties = new File("server.properties");
         System.out.println(System.getProperty("user.dir"));
         String playerDataDir = null;
@@ -50,7 +88,12 @@ public final class PlayerStats {
             reader.close();
             playerDataDir = playerDataDir + "/stats";
         }
-        return playerDataDir;
+        File[] statsFiles = new File(playerDataDir).listFiles();
+        if (statsFiles == null) {
+            System.out.println("Stats files not found at: " + playerDataDir);
+            System.exit(0);
+        }
+        return statsFiles;
     }
 
     /**
@@ -87,11 +130,10 @@ public final class PlayerStats {
 
     /**
      * Main function.
+     * @throws IOException 
      */
-    public static void main(String[] args) throws FileNotFoundException {
-        PlayTime playTime = new PlayTime();
-        String statsDir = getPlayerDataDir();
-        Map<String, Integer> stats = playTime.getTimePlayed(statsDir, userCacheCheck());
+    public static void main(String[] args) throws IOException {
+        Map<String, Integer> stats = new PlayTime().getTimePlayed(versionCheck(), getPlayerDataDir(), userCacheCheck());
         System.out.println(String.format("%-39s", "").replace(' ', '_'));
         System.out.printf("%-26s %-12s\n", "Username", "Hours Played");
         System.out.println(String.format("%-39s", "").replace(' ', '_'));
