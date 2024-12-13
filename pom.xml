@@ -10,11 +10,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>5.6.0</junit.version>
     <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
-    <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
-    <checkstyle.version>8.45.1</checkstyle.version>
+    <maven-checkstyle-plugin.version>3.2.0</maven-checkstyle-plugin.version>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
-    <maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
     <!-- JaCoCo thresholds. Increase gradually as you add tests. -->
     <jacoco.unit-tests.limit.instruction-ratio>0%</jacoco.unit-tests.limit.instruction-ratio>
     <jacoco.unit-tests.limit.branch-ratio>0%</jacoco.unit-tests.limit.branch-ratio>
@@ -22,35 +20,27 @@
     <jacoco.unit-tests.limit.method-complexity>5</jacoco.unit-tests.limit.method-complexity>
   </properties>
   <dependencies>
-
     <dependency>
       <groupId>com.liferay</groupId>
       <artifactId>com.fasterxml.jackson.annotations</artifactId>
       <version>2.10.3.LIFERAY-PATCHED-1</version>
     </dependency>
-
-
     <dependency>
       <groupId>com.liferay</groupId>
       <artifactId>com.fasterxml.jackson.core</artifactId>
       <version>2.10.3.LIFERAY-PATCHED-1</version>
     </dependency>
-
-
     <dependency>
       <groupId>com.liferay</groupId>
       <artifactId>com.fasterxml.jackson.databind</artifactId>
       <version>2.10.5.1.LIFERAY-PATCHED-1</version>
     </dependency>
-
-
     <dependency>
       <groupId>com.fasterxml.jackson</groupId>
       <artifactId>jackson-base</artifactId>
       <version>2.14.2</version>
       <type>pom</type>
     </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -144,7 +134,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>playerstats.PlayerStats</mainClass>
+              <mainClass>PlayerStats</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -173,22 +163,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>${maven-checkstyle-plugin.version}</version>
-        <dependencies>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>${checkstyle.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>com.github.ngeor</groupId>
-            <artifactId>checkstyle-rules</artifactId>
-            <version>4.9.3</version>
-          </dependency>
-        </dependencies>
         <configuration>
-          <configLocation>com/github/ngeor/checkstyle.xml</configLocation>
-          <includeTestSourceDirectory>true</includeTestSourceDirectory>
-          <skip>${skipTests}</skip>
+          <configLocation>${project.basedir}/tools/checkstyle.xml</configLocation>
+          <inputEncoding>UTF-8</inputEncoding>
+          <consoleOutput>true</consoleOutput>
         </configuration>
         <executions>
           <execution>
@@ -276,11 +254,6 @@
   </build>
   <reporting>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven-javadoc-plugin.version}</version>
-      </plugin>
     </plugins>
   </reporting>
 </project>
