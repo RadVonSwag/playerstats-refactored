@@ -16,7 +16,7 @@ public class PlayTime {
 
     private static final int TIME_FACTOR = 72000;
     private static final int UUID_INDEX = 36;
-    private Logger log = Logger.getLogger(PlayTime.class.getName());
+    private final Logger log = Logger.getLogger(PlayTime.class.getName());
     private String usercacheDir = "./usercache.json";
     private final ObjectMapper mapper = new ObjectMapper();
     Map<String, Integer> uuidAndTime = new HashMap<String, Integer>();
@@ -44,8 +44,7 @@ public class PlayTime {
     }
 
     private void handleNew(File[] statsFiles) {
-        for (int i = 0; i < statsFiles.length; i++) {
-            File currentFile = statsFiles[i];
+        for (File currentFile : statsFiles) {
             try {
                 JsonNode currentPlayer = mapper.readTree(currentFile);
                 try {
@@ -76,8 +75,7 @@ public class PlayTime {
     }
 
     private void handleLegacy(File[] statsFiles) {
-        for (int i = 0; i < statsFiles.length; i++) {
-            File currentFile = statsFiles[i];
+        for (File currentFile : statsFiles) {
             try {
                 JsonNode currentPlayer = mapper.readTree(currentFile);
                 try {
