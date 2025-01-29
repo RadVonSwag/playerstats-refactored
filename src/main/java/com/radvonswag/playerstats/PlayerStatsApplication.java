@@ -46,7 +46,6 @@ public final class PlayerStatsApplication {
     /**
      * This method checks to see if the user has specified the version once before, making it so that they do not have to enter the version every time.
      * @return "y" or "n" based on the content of the version file or the users' input if first time running.
-     * @throws IOException
      *
      */
     public static String versionCheck() throws IOException {
@@ -86,7 +85,6 @@ public final class PlayerStatsApplication {
      * This method dynamically retrieves the world save filename from the server
      * folder's server.properties
      * file for use in obtaining playerstats.
-     * @throws FileNotFoundException
      */
     public static File[] getPlayerDataDir() throws FileNotFoundException {
         File serverProperties = new File("server.properties");
@@ -115,9 +113,6 @@ public final class PlayerStatsApplication {
 
     /**
      * findDataDir is a helper method for getPlayerDataDir
-     * @param serverProperties
-     * @return
-     * @throws FileNotFoundException
      */
     private static String findDataDir(File serverProperties) throws FileNotFoundException {
         Scanner reader = new Scanner(serverProperties, StandardCharsets.UTF_8.name());

@@ -19,8 +19,8 @@ public class PlayTime {
     private final Logger log = Logger.getLogger(PlayTime.class.getName());
     private String usercacheDir = "./usercache.json";
     private final ObjectMapper mapper = new ObjectMapper();
-    Map<String, Integer> uuidAndTime = new HashMap<String, Integer>();
-    Map<String, Integer> usernameAndTime = new HashMap<String, Integer>();
+    Map<String, Integer> uuidAndTime = new HashMap<>();
+    Map<String, Integer> usernameAndTime = new HashMap<>();
 
     /**
      * This asks the user what version their server is running since the way stats are handled changes
