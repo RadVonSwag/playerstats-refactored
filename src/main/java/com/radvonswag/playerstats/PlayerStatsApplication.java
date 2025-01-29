@@ -75,10 +75,11 @@ public final class PlayerStatsApplication {
     }
 
     public static void saveVersionToFile(File minecraftVersionFile) throws IOException {
-        minecraftVersionFile.getParentFile().mkdirs();
-        FileWriter writer = new FileWriter(VERSION_CONFIG_DIR);
-        writer.write(isPointTwelve);
-        writer.close();
+        if (minecraftVersionFile.getParentFile().mkdirs()) {
+            FileWriter writer = new FileWriter(VERSION_CONFIG_DIR);
+            writer.write(isPointTwelve);
+            writer.close();
+        }
     }
 
     /**
@@ -131,7 +132,6 @@ public final class PlayerStatsApplication {
      * This method checks for the usercache.json file and if it doesn't exist it
      * will attempt to use the whitelist.json
      * as backup and if that does not exist, the program will exit.
-     * @return
      */
     public static boolean userCacheCheck() {
         File userCache = new File("usercache.json");
@@ -162,7 +162,6 @@ public final class PlayerStatsApplication {
 
     /**
      * Main function.
-     * @throws IOException
      */
     public static void main(String[] args) throws IOException {
         handleArgs(args);
