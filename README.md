@@ -25,7 +25,7 @@ Planned features:
 - Allow admin to set/show favorite stats.
 - Allow admin to look at an individual/specific players' stats.
 - Make app more cli-friendly with arguments.
-~~- Set server version once and skip the version prompt on subsequent runs.~~
+- ~~Set server version once and skip the version prompt on subsequent runs.~~
 
 Long Term Goal:
 
