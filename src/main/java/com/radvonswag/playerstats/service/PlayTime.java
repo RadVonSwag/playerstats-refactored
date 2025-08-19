@@ -30,15 +30,15 @@ public class PlayTime {
      * @param statsFiles an array of the files that contain the players' stats.
      * @param useWhitelist boolean to determine if the whitelist will be used as the usercache or not.
      */
-    public Map<String, Integer> getTimePlayed( String isPointTwelve, File[] statsFiles, boolean useWhitelist) {
+    public Map<String, Integer> getTimePlayed(boolean isPointTwelve, File[] statsFiles, boolean useWhitelist) {
         if (useWhitelist) {
             usercacheDir = "./whitelist.json";
         }
         log.info("Gathering User Time Played");
-        if ("n".equalsIgnoreCase(isPointTwelve)) {
-            handleNew(statsFiles);
-        } else if ("y".equalsIgnoreCase(isPointTwelve)) {
+        if (isPointTwelve) {
             handleLegacy(statsFiles);
+        } else {
+            handleNew(statsFiles);
         }
         return getUserNameAndTime();
     }
