@@ -6,17 +6,23 @@ package com.radvonswag.playerstats.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.radvonswag.playerstats.model.PlayerStatsNew;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+
+import static com.radvonswag.playerstats.error.ErrorHandler.logErrorAndExit;
 
 public class PlayTime {
 
     private static final int TIME_FACTOR = 72000;
     private static final int UUID_INDEX = 36;
-    private final Logger log = Logger.getLogger(PlayTime.class.getName());
+    private final Logger log = LoggerFactory.getLogger(PlayTime.class);
     private String usercacheDir = "./usercache.json";
     private final ObjectMapper mapper = new ObjectMapper();
     Map<String, Integer> uuidAndTime = new HashMap<>();
@@ -96,6 +102,7 @@ public class PlayTime {
         }
     }
 
+    // TODO: replace this with associateUserName() function in PlayerDataHandler
     private Map<String, Integer> getUserNameAndTime() {
         JsonNode playerList;
         try {
@@ -115,5 +122,28 @@ public class PlayTime {
             System.exit(0);
         }
         return usernameAndTime;
+    }
+
+    public Integer getPlayTimeNew(PlayerStatsNew playerStats) {
+        Integer timePlayed = playerStats.getCustomStats().get("minecraft:play_one_minute");
+
+        if (timePlayed == null) {
+            timePlayed = playerStats.getCustomStats().get("minecraft:play_time");
+        }
+
+        if (timePlayed == null) {
+            logErrorAndExit(log, "Error obtaining player stats. Please double check server version...");
+        }
+        return timePlayed / TIME_FACTOR;
+    }
+
+    // TODO: Figure out where to use this method
+    public Map<String, Integer> getPlayTimeForAllPlayersNew(List<PlayerStatsNew> playerStatsList) {
+        Map<String, Integer> uuidAndTimeMap = new HashMap<>();
+        for (PlayerStatsNew currentPlayer : playerStatsList) {
+            Integer playTime = getPlayTimeNew(currentPlayer);
+            uuidAndTimeMap.put(currentPlayer.getUUID(), playTime);
+        }
+        return uuidAndTimeMap;
     }
 }
