@@ -27,10 +27,10 @@ public class PlayerDataHandler {
     private final String serverPropertiesInvalidErrorMessage = "Invalid server.properties file.";
     private final String statsFileNotFoundErrorMessage = "Stats files not found at: " + playerDataDir;
     private final Logger log = LoggerFactory.getLogger(PlayerDataHandler.class);
-    private final Map<String, String> userCache = UserCacheHandler.loadUserCache();
+    private final UserCacheHandler userCacheHandler;
 
-    public PlayerDataHandler() {
-
+    public PlayerDataHandler(UserCacheHandler userCacheHandler) {
+        this.userCacheHandler = userCacheHandler;
     }
 
     public PlayerStatsNew getPlayerDataNew(File statsFile) throws IOException {
@@ -72,8 +72,13 @@ public class PlayerDataHandler {
         return playerStatsList;
     }
 
-    //TODO: implement this function
     public String associateUserName(PlayerStatsNew playerStats) {
+        Map<String, String> userCache = userCacheHandler.loadUserCache();
+        for (Map.Entry<String, String> entry : userCache.entrySet()) {
+            if (playerStats.getUUID().equals(entry.getKey())) {
+                return entry.getValue();
+            }
+        }
         return "";
     }
 

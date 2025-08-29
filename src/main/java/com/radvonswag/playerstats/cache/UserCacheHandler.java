@@ -1,6 +1,7 @@
 package com.radvonswag.playerstats.cache;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.radvonswag.playerstats.model.UserCacheEntry;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.radvonswag.playerstats.error.ErrorHandler.logErrorAndExit;
@@ -37,7 +39,6 @@ public class UserCacheHandler {
      * as backup and if that does not exist, the program will exit.
      */
     public boolean userCacheCheck(boolean useWhitelist) {
-        log.info(System.getProperty("user.dir"));
         if (!useWhitelist) {
             String userCacheFileName = "usercache.json";
             File userCache = new File(userCacheFileName);
@@ -60,16 +61,19 @@ public class UserCacheHandler {
         return true;
     }
 
-    public static Map<String, String> loadUserCache() {
+    public Map<String, String> loadUserCache() {
         Map<String, String> userCache = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            Map<String, UserCacheEntry> temp = objectMapper.readValue(new File("usercache.json"),
-                    objectMapper.getTypeFactory().constructMapType(Map.class, String.class, UserCacheEntry.class));
+            List<UserCacheEntry> tempList = objectMapper.readValue(
+                    new File("usercache.json"),
+                    new TypeReference<List<UserCacheEntry>>() {}
+            );
 
-            for (Map.Entry<String, UserCacheEntry> entry : temp.entrySet()) {
-                userCache.put(entry.getKey(), entry.getValue().getUserName());
+            for (UserCacheEntry entry : tempList) {
+                userCache.put(entry.getUUID(), entry.getName());
             }
+
         } catch (Exception e) {
             logErrorAndExit(log, e.getMessage());
         }

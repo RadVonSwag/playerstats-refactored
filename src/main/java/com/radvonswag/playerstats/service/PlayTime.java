@@ -107,7 +107,6 @@ public class PlayTime {
         JsonNode playerList;
         try {
             playerList = mapper.readTree(new File(usercacheDir));
-            log.info("Players found: " + playerList.size());
             for (int i = 0; i < playerList.size(); i++) {
                 String uuidKey = playerList.get(i).get("uuid").asText();
                 int time = 0;
@@ -125,10 +124,16 @@ public class PlayTime {
     }
 
     public Integer getPlayTimeNew(PlayerStatsNew playerStats) {
-        Integer timePlayed = playerStats.getCustomStats().get("minecraft:play_one_minute");
+        Integer timePlayed = playerStats
+                .getStats()
+                .getCustom()
+                .get("minecraft:play_one_minute");
 
         if (timePlayed == null) {
-            timePlayed = playerStats.getCustomStats().get("minecraft:play_time");
+            timePlayed = playerStats
+                    .getStats()
+                    .getCustom()
+                    .get("minecraft:play_time");
         }
 
         if (timePlayed == null) {

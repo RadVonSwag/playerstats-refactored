@@ -2,7 +2,7 @@ package com.radvonswag.playerstats.model;
 
 public class UserCacheEntry {
     String UUID;
-    String userName;
+    String name;
     String expiresOn;
 
     public String getUUID() {
@@ -13,12 +13,12 @@ public class UserCacheEntry {
         this.UUID = UUID;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getExpiresOn() {

@@ -4,18 +4,33 @@
 package com.radvonswag.playerstats;
 
 import com.radvonswag.playerstats.cache.UserCacheHandler;
+import com.radvonswag.playerstats.model.PlayerStatsNew;
 import com.radvonswag.playerstats.playerdata.PlayerDataHandler;
 import com.radvonswag.playerstats.service.PlayTime;
 import com.radvonswag.playerstats.version.VersionHandler;
 import org.apache.commons.cli.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public final class PlayerStatsApplication {
+    private static final Logger log = LoggerFactory.getLogger(PlayerStatsApplication.class);
     private static boolean doSaveVersion;
     private static boolean useWhitelist = false;
+
+    private final UserCacheHandler userCacheHandler;
+    private final VersionHandler versionHandler;
+    private final PlayerDataHandler playerDataHandler;
+
+    public PlayerStatsApplication(UserCacheHandler userCacheHandler, VersionHandler versionHandler, PlayerDataHandler playerDataHandler) {
+        this.userCacheHandler = userCacheHandler;
+        this.versionHandler = versionHandler;
+        this. playerDataHandler = playerDataHandler;
+    }
 
     public static void handleArgs(String[] args) {
         Options options = new Options();
@@ -47,17 +62,16 @@ public final class PlayerStatsApplication {
         }
     }
 
-    /**
-     * Main function.
-     */
-    public static void main(String[] args) throws IOException {
+    public void run(String[] args) throws IOException {
         handleArgs(args);
-        UserCacheHandler userCacheHandler = new UserCacheHandler();
-        VersionHandler versionHandler = new VersionHandler();
-        PlayerDataHandler playerDataHandler = new PlayerDataHandler();
+        log.info("Starting Player Stats Application in {}", System.getProperty("user.dir"));
         useWhitelist = userCacheHandler.userCacheCheck(useWhitelist);
         boolean isPointTwelve = versionHandler.checkServerVersion(doSaveVersion);
         File[] statsFiles = playerDataHandler.getPlayerDataDir();
+
+        List<PlayerStatsNew> listOfPlayerStats = playerDataHandler.getPlayerStatsListNew();
+        log.info("Player Stats successfully retrieved for {} players", listOfPlayerStats.size());
+
         Map<String, Integer> stats = new PlayTime().getTimePlayed(isPointTwelve, statsFiles, useWhitelist);
         displayStats(stats);
     }
