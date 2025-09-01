@@ -1,12 +1,8 @@
 package com.radvonswag.playerstats.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class PlayerStatsNew {
+public class PlayerStats {
     @JsonProperty("DataVersion")
     private int dataVersion;
     private Stats stats;

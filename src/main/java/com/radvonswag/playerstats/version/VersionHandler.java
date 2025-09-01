@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class VersionHandler {
 
     private static final String VERSION_CONFIG_DIR = "./playerstats/config/minecraft_version.dat";
-    private static boolean isPointTwelve;
+    private static boolean isLegacy;
 
     public VersionHandler() {}
 
@@ -22,18 +22,24 @@ public class VersionHandler {
         File minecraftVersionFile = new File(VERSION_CONFIG_DIR);
         if (!minecraftVersionFile.exists() || !doSaveVersion) {
             Scanner input = new Scanner(System.in);
-            System.out.println("Is this server on 1.12 (or older)? (Y/N)");
-            isPointTwelve = handleUserPrompt(input, "Is this server on 1.12 (or older)? (Y/N)");
+            String prompt = "Is this server on 1.13 (or newer)? (Y/N)";
+            System.out.println(prompt);
+            isLegacy = handleUserPrompt(input, prompt);
             if (doSaveVersion) {
                 saveVersionToFile(minecraftVersionFile);
             }
             input.close();
         } else {
             Scanner reader = new Scanner(minecraftVersionFile);
-            isPointTwelve = Boolean.parseBoolean(reader.nextLine());
+            isLegacy = Boolean.parseBoolean(reader.nextLine());
             reader.close();
         }
-        return isPointTwelve;
+        return isLegacy;
+    }
+    // TODO: Implement :D
+    public boolean checkServerVersionDynamic() {
+
+        return false;
     }
 
     public static boolean handleUserPrompt(Scanner input, String prompt) {
@@ -41,9 +47,9 @@ public class VersionHandler {
         while (true) {
             response = input.nextLine().trim().toLowerCase();
             if ("y".equals(response)) {
-                return true;
-            } else if ("n".equals(response)) {
                 return false;
+            } else if ("n".equals(response)) {
+                return true;
             } else {
                 System.out.println(prompt);
             }
@@ -53,7 +59,7 @@ public class VersionHandler {
     public static void saveVersionToFile(File minecraftVersionFile) throws IOException {
         if (minecraftVersionFile.getParentFile().mkdirs()) {
             FileWriter writer = new FileWriter(VERSION_CONFIG_DIR);
-            writer.write(String.valueOf(isPointTwelve));
+            writer.write(String.valueOf(isLegacy));
             writer.close();
         }
     }

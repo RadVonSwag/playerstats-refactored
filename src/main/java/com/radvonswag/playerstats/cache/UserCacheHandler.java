@@ -1,6 +1,5 @@
 package com.radvonswag.playerstats.cache;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.radvonswag.playerstats.model.UserCacheEntry;
@@ -8,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +16,7 @@ import static com.radvonswag.playerstats.error.ErrorHandler.logError;
 
 public class UserCacheHandler {
     private static final int USERCACHE_BUFFER = 39;
-    private String userCacheDir = "./usercache.json";
+    private final String userCacheFileName = "usercache.json";
     private final String userCacheNotFoundErrorMessage = "Invalid server folder. The file \"usercache.json\" was not found. "
             + "Please finish setting up the server and confirm that it runs, "
             + "has a world save, a usercache file, and a valid server.properties file."
@@ -36,16 +34,14 @@ public class UserCacheHandler {
     /**
      * This method checks for the usercache.json file and if it doesn't exist it
      * will attempt to use the whitelist.json
-     * as backup and if that does not exist, the program will exit.
+     * as backup and if that does not exist, the program will log an error and exit.
      */
     public boolean userCacheCheck(boolean useWhitelist) {
         if (!useWhitelist) {
-            String userCacheFileName = "usercache.json";
             File userCache = new File(userCacheFileName);
             if (!userCache.exists()) {
                 logErrorAndExit(log, userCacheNotFoundErrorMessage);
             }
-
             if (userCache.length() < USERCACHE_BUFFER) {
                 logError(log, userCacheFormatErrorMessage);
             }
@@ -66,7 +62,7 @@ public class UserCacheHandler {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             List<UserCacheEntry> tempList = objectMapper.readValue(
-                    new File("usercache.json"),
+                    new File(userCacheFileName),
                     new TypeReference<List<UserCacheEntry>>() {}
             );
 

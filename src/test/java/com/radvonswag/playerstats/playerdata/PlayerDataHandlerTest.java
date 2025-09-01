@@ -1,12 +1,11 @@
 package com.radvonswag.playerstats.playerdata;
 
 import com.radvonswag.playerstats.cache.UserCacheHandler;
-import com.radvonswag.playerstats.model.PlayerStatsNew;
+import com.radvonswag.playerstats.model.PlayerStats;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashMap;
@@ -39,7 +38,7 @@ class PlayerDataHandlerTest {
         mockUserCache.put(UUID2, userName2);
         mockUserCache.put(UUID3, userName3);
 
-        PlayerStatsNew playerStats = new PlayerStatsNew();
+        PlayerStats playerStats = new PlayerStats();
         playerStats.setPlayerUUID(UUID2);
 
         when(userCacheHandler.loadUserCache()).thenReturn(mockUserCache);

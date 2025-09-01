@@ -17,6 +17,6 @@ public class Main {
 
         PlayerStatsApplication playerStatsApplication = new PlayerStatsApplication(userCacheHandler, versionHandler, playerDataHandler);
 
-       playerStatsApplication.run(args);
+        playerStatsApplication.run(args);
     }
 }
