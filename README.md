@@ -20,7 +20,8 @@ Answer "n" if the server is 1.13 or newer.
 Planned features:
 
 - Automatically detect server version.
-- Index and format all 1000+ player stats.
+- ~~Index and format all 1000+ player stats~~.
+- Make more stats (other than just time) viewable to user/server admin
 - Create and store log files for errors and results.
 - Allow admin to set/show favorite stats.
 - Allow admin to look at an individual/specific players' stats.
