@@ -4,116 +4,46 @@
  */
 package com.radvonswag.playerstats.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.IOException;
+import com.radvonswag.playerstats.model.PlayerStats;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+
+import static com.radvonswag.playerstats.error.ErrorHandler.logErrorAndExit;
 
 public class PlayTime {
 
     private static final int TIME_FACTOR = 72000;
-    private static final int UUID_INDEX = 36;
-    private final Logger log = Logger.getLogger(PlayTime.class.getName());
-    private String usercacheDir = "./usercache.json";
-    private final ObjectMapper mapper = new ObjectMapper();
-    Map<String, Integer> uuidAndTime = new HashMap<>();
-    Map<String, Integer> usernameAndTime = new HashMap<>();
+    private final Logger log = LoggerFactory.getLogger(PlayTime.class);
 
-    /**
-     * This asks the user what version their server is running since the way stats are handled changes
-     * in future versions of the game.
-     * It then proceeds with the stat retrieval and time calculation.
-     * @param isPointTwelve is the string "y" or "n" depending on user's settings.
-     * @param statsFiles an array of the files that contain the players' stats.
-     * @param useWhitelist boolean to determine if the whitelist will be used as the usercache or not.
-     */
-    public Map<String, Integer> getTimePlayed(boolean isPointTwelve, File[] statsFiles, boolean useWhitelist) {
-        if (useWhitelist) {
-            usercacheDir = "./whitelist.json";
+    public Integer getPlayTime(PlayerStats playerStats) {
+        Integer timePlayed = playerStats
+                .getStats()
+                .getCustom()
+                .get("minecraft:play_one_minute");
+
+        if (timePlayed == null) {
+            timePlayed = playerStats
+                    .getStats()
+                    .getCustom()
+                    .get("minecraft:play_time");
         }
-        log.info("Gathering User Time Played");
-        if (isPointTwelve) {
-            handleLegacy(statsFiles);
-        } else {
-            handleNew(statsFiles);
+
+        if (timePlayed == null) {
+            logErrorAndExit(log, "Error obtaining player stats. Please double check server version...");
         }
-        return getUserNameAndTime();
+        return timePlayed / TIME_FACTOR;
     }
 
-    private void handleNew(File[] statsFiles) {
-        for (File currentFile : statsFiles) {
-            try {
-                JsonNode currentPlayer = mapper.readTree(currentFile);
-                try {
-                    String timePlayedAsString = currentPlayer.get("stats").get("minecraft:custom")
-                        .get("minecraft:play_one_minute")
-                        .toString();
-                    int timePlayed = Integer.parseInt(timePlayedAsString) / TIME_FACTOR;
-                    String uuid = currentFile.getName().substring(0, UUID_INDEX);
-                    uuidAndTime.put(uuid, timePlayed);
-                } catch (NullPointerException e) {
-                    try {
-                        String timePlayedAsString = currentPlayer.get("stats").get("minecraft:custom")
-                            .get("minecraft:play_time")
-                            .toString();
-                        int timePlayed = Integer.parseInt(timePlayedAsString) / TIME_FACTOR;
-                        String uuid = currentFile.getName().substring(0, UUID_INDEX);
-                        uuidAndTime.put(uuid, timePlayed);
-                    } catch (NullPointerException t) {
-                        System.out.println("Error obtaining player stats. Please double check server version...");
-                        System.exit(0);
-                    }
-                }
-            } catch (IOException e) {
-                System.out.println("Error obtaining player stats. Please double check server version...");
-                System.exit(0);
-            }
+    public Map<String, Integer> getPlayTimeForAllPlayers(List<PlayerStats> playerStatsList) {
+        Map<String, Integer> userNameAndTimeMap = new HashMap<>();
+        for (PlayerStats currentPlayer : playerStatsList) {
+            Integer playTime = getPlayTime(currentPlayer);
+            userNameAndTimeMap.put(currentPlayer.getUserName(), playTime);
         }
-    }
-
-    private void handleLegacy(File[] statsFiles) {
-        for (File currentFile : statsFiles) {
-            try {
-                JsonNode currentPlayer = mapper.readTree(currentFile);
-                try {
-                    String timePlayedAsString = currentPlayer.get("stat.playOneMinute")
-                        .toString();
-                    int timePlayed = Integer.parseInt(timePlayedAsString) / TIME_FACTOR;
-                    String uuid = currentFile.getName().substring(0, UUID_INDEX);
-                    uuidAndTime.put(uuid, timePlayed);
-                } catch (NullPointerException e) {
-                    System.out.println("Error obtaining player stats. Please double check server version...");
-                    System.exit(0);
-                }
-
-            } catch (IOException e) {
-                System.out.println("Error obtaining player stats. Please double check server version...");
-                System.exit(0);
-            }
-        }
-    }
-
-    private Map<String, Integer> getUserNameAndTime() {
-        JsonNode playerList;
-        try {
-            playerList = mapper.readTree(new File(usercacheDir));
-            log.info("Players found: " + playerList.size());
-            for (int i = 0; i < playerList.size(); i++) {
-                String uuidKey = playerList.get(i).get("uuid").asText();
-                int time = 0;
-                if (uuidAndTime.get(uuidKey) != null) {
-                    time = uuidAndTime.get(uuidKey);
-                }
-                usernameAndTime.put(playerList.get(i).get("name").asText(), time);
-                //log.info("Found user: " + playerList.get(i).get("name").asText());
-            }
-        } catch(IOException e) {
-            System.out.println("Error obtaining player stats. Please double check server version...");
-            System.exit(0);
-        }
-        return usernameAndTime;
+        return userNameAndTimeMap;
     }
 }
